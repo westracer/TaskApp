@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_kurs/assets/icon_pack_icons.dart';
 import 'package:ui_kurs/layout/colors.dart';
-import 'package:ui_kurs/types/routes.dart';
+import 'package:ui_kurs/types/app/routes.dart';
 import 'package:ui_kurs/widgets/ui/big-round-button.dart';
 
 class TaskListPage extends StatelessWidget {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ui_kurs/assets/icon_pack_icons.dart';
 import 'package:ui_kurs/layout/colors.dart';
-import 'package:ui_kurs/types/routes.dart';
+import 'package:ui_kurs/types/app/routes.dart';
 import 'package:ui_kurs/widgets/ui/big-round-button.dart';
 
 class StartPage extends StatelessWidget {
@@ -62,26 +62,35 @@ class StartPage extends StatelessWidget {
                           margin: const EdgeInsets.only(bottom: 20),
                           child: BigRoundButton(
                             text: 'Войти',
+                            onClick: () {
+                              debugPrint('click');
+                            },
                             normalColors: BigRoundButtonColors(color: CustomColors.lightBlue, borderColor: CustomColors.lightBlue, textColor: Colors.white),
                             hoverColors: BigRoundButtonColors(color: Colors.white, borderColor: CustomColors.lightBlue, textColor: CustomColors.lightBlue),
                           ),
                         ),
                         Container(
-                          margin: const EdgeInsets.only(bottom: 40),
                           child: BigRoundButton(
                             text: 'Зарегистрироваться',
                             normalColors: BigRoundButtonColors(color: Colors.white, borderColor: CustomColors.violet, textColor: CustomColors.violet),
                             hoverColors: BigRoundButtonColors(color: CustomColors.violet, borderColor: CustomColors.violet, textColor: Colors.white),
                           ),
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.pushReplacementNamed(context, Routes.taskList);
-                          },
-                          child: Text(
-                            'Продолжить без регистрации',
-                            style: TextStyle(color: CustomColors.lightBlue, fontWeight: FontWeight.normal, fontSize: 14, decoration: TextDecoration.underline),
-                          )
+                        Expanded(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: <Widget>[
+                            MaterialButton(
+                              onPressed: () {
+                                Navigator.pushReplacementNamed(context, Routes.taskList);
+                              },
+                              height: 40,
+                              child: Text(
+                                'Продолжить без регистрации',
+                                style: TextStyle(color: CustomColors.lightBlue, fontWeight: FontWeight.normal, fontSize: 14, decoration: TextDecoration.underline),
+                              )
+                            )
+                          ],),
                         )
                       ],
                     ),
