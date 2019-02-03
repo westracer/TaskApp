@@ -5,3 +5,15 @@ class CreateTaskAction {
 
   final Task task;
 }
+
+class EditTaskAction {
+  EditTaskAction(this.task);
+
+  final Task task;
+}
+
+class ToggleDoneTaskAction {
+  ToggleDoneTaskAction(this.task);
+
+  final Task task;
+}

@@ -6,6 +6,7 @@ enum AuthType {
   WITHOUT
 }
 
+// TODO: built_value
 class User {
   User({this.email = '', this.name = '', this.pass = ''});
 

@@ -2,12 +2,35 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ui_kurs/layout/colors.dart';
 import 'package:ui_kurs/types/data/task.dart';
+import 'package:ui_kurs/types/redux/actions/task-actions.dart';
+import 'package:ui_kurs/widgets/models/app-state.dart';
 
 class TaskListItem extends StatelessWidget {
   TaskListItem(this.task);
 
+  final Task task;
+
+  @override
+  Widget build(BuildContext context) {
+    return new StoreConnector<AppState, OnItemChangeCallback>(
+        converter: (store) {
+          return (gotTask) =>
+            store.dispatch(ToggleDoneTaskAction(gotTask));
+    }, builder: (context, callback) {
+      return new _TaskListItem(task, callback);
+    });
+  }
+}
+
+typedef OnItemChangeCallback = Function(Task task);
+
+class _TaskListItem extends StatelessWidget {
+  _TaskListItem(this.task, this.changeCallback);
+  
+  final OnItemChangeCallback changeCallback;
   final Task task;
 
   @override
@@ -26,10 +49,10 @@ class TaskListItem extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
               Checkbox(
-                value: false,
+                value: task.isCompleted(),
                 activeColor: CustomColors.green,
                 onChanged: (value) {
-                  debugPrint('checkbox ' + value.toString());
+                  changeCallback(task);
                 },
               ),
               Flexible(

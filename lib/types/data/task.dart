@@ -1,20 +1,27 @@
+library task;
+
+import 'package:built_collection/built_collection.dart';
 import 'package:ui_kurs/types/app/user.dart';
 import 'package:uuid/uuid.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+
+part 'task.g.dart';
 
 enum TaskStatus { NEW, WIP, PROBLEM, POSTPONED, DONE }
 
-class Task {
-  Task({
-    this.title, 
-    this.creator,
-    this.description = '', 
-    this.executor = null, 
-    this.dateTime = null, 
-    this.status = TaskStatus.NEW,
-    this.plannedTime = 0,
-    this.timeSpent = 0,
-    this.groupId = '',
-  });
+abstract class Task implements Built<Task, TaskBuilder> {
+  // Task({
+  //   this.title, 
+  //   this.creator,
+  //   this.description = '',
+  //   this.executor = null, 
+  //   this.dateTime = null, 
+  //   this.status = TaskStatus.NEW,
+  //   this.plannedTime = 0,
+  //   this.timeSpent = 0,
+  //   this.groupId = '',
+  // });
 
   static TaskStatus getStatusFromString(String statusAsString) {
     for (TaskStatus element in TaskStatus.values) {
@@ -30,38 +37,42 @@ class Task {
     return 'T' + Uuid().v4().toString();
   }
 
-  final String id = Task.generateId();
-  final String title;
-  final String description;
-  final DateTime dateTime;
-  final User executor;
-  final User creator;
-  final TaskStatus status;
-  final List<Task> children = List<Task>();
-  final int plannedTime;
-  final int timeSpent;
-  final String groupId;
+  String get id;
+  String get title;
 
-  Task.fromJson(Map<String, dynamic> json)
-      : title = json['title'],
-        creator = json['creator'],
-        description = json['description'],
-        executor = json['executor'],
-        dateTime = json['dateTime'],
-        status = Task.getStatusFromString(json['status']),
-        plannedTime = json['plannedTime'],
-        timeSpent = json['timeSpent'],
-        groupId = json['groupId'];
+  @nullable
+  String get description;
 
-  Map<String, dynamic> toJson() => {
-    'title': title,
-    'creator': creator,
-    'description': description,
-    'executor': executor,
-    'dateTime': dateTime,
-    'status': status.toString(),
-    'plannedTime': plannedTime,
-    'timeSpent': timeSpent,
-    'groupId': groupId,
-  };
+  @nullable
+  DateTime get dateTime;
+
+  @nullable
+  User get executor;
+
+  @nullable
+  User get creator;
+  TaskStatus get status;
+  List<Task> get children;
+  int get plannedTime;
+  int get timeSpent;
+
+  @nullable
+  String get groupId;
+
+  Task toggleStatusDone() {
+    if (this.status == TaskStatus.DONE) {
+      return this.rebuild((b) => b..status = TaskStatus.WIP);
+    } else {
+      return this.rebuild((b) => b..status = TaskStatus.DONE);
+    }
+  }
+
+  bool isCompleted() {
+    return this.status == TaskStatus.DONE;
+  }
+
+  Task._();
+  static Serializer<Task> get serializer => _$taskSerializer;
+  factory Task([updates(TaskBuilder b)]) =>
+      _$Task((b) => b..id = generateId()..children = []..status = TaskStatus.NEW..plannedTime = 0..timeSpent = 0..update(updates));
 }

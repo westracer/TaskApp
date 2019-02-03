@@ -63,17 +63,18 @@ class StartPage extends StatelessWidget {
                           child: BigRoundButton(
                             text: 'Войти',
                             onClick: () {
-                              debugPrint('click');
+                              Navigator.pushReplacementNamed(context, Routes.taskList);
                             },
                             normalColors: BigRoundButtonColors(color: CustomColors.lightBlue, borderColor: CustomColors.lightBlue, textColor: Colors.white),
-                            hoverColors: BigRoundButtonColors(color: Colors.white, borderColor: CustomColors.lightBlue, textColor: CustomColors.lightBlue),
                           ),
                         ),
                         Container(
                           child: BigRoundButton(
                             text: 'Зарегистрироваться',
+                            onClick: () {
+                              Navigator.pushReplacementNamed(context, Routes.taskList);
+                            },
                             normalColors: BigRoundButtonColors(color: Colors.white, borderColor: CustomColors.violet, textColor: CustomColors.violet),
-                            hoverColors: BigRoundButtonColors(color: CustomColors.violet, borderColor: CustomColors.violet, textColor: Colors.white),
                           ),
                         ),
                         Expanded(

@@ -9,11 +9,10 @@ class BigRoundButtonColors {
 }
 
 class BigRoundButton extends StatelessWidget {
-  const BigRoundButton({ Key key, this.text, this.normalColors, this.hoverColors, this.onClick }) : super(key: key);
+  const BigRoundButton({ Key key, this.text, this.normalColors, this.onClick }) : super(key: key);
   
   final String text;
   final BigRoundButtonColors normalColors;
-  final BigRoundButtonColors hoverColors;
   final void Function() onClick;
 
   @override

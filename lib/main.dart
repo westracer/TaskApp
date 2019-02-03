@@ -3,7 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:redux/redux.dart';
 import 'package:ui_kurs/types/app/routes.dart';
 import 'package:ui_kurs/types/data/task.dart';
+import 'package:ui_kurs/types/redux/middlewares.dart';
 import 'package:ui_kurs/widgets/models/app-state.dart';
+import 'package:ui_kurs/widgets/pages/add-task-page.dart';
 import 'package:ui_kurs/widgets/pages/start-page.dart';
 import 'package:ui_kurs/widgets/pages/task-list-page.dart';
 import 'package:ui_kurs/types/redux/reducers.dart';
@@ -14,7 +16,8 @@ void main() =>
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     final store = DevToolsStore<AppState>(
       appReducers,
-      initialState: AppState(tasks: [Task(title: 'task 1'), Task(title: 'task 2')])
+      initialState: AppState(tasks: [Task((b) => b..title = 'task 1'), Task((b) => b..title = 'task 2')]),
+      // middleware: createAllMiddleware()
     );
 
     runApp(ReduxApp(store));
@@ -46,6 +49,7 @@ class MyApp extends StatelessWidget {
       routes: {
         Routes.welcome: (context) => StartPage(),
         Routes.taskList: (context) => TaskListPage(store),
+        Routes.taskCreate: (context) => AddTaskPage(),
       },
       title: 'Task App',
     );
