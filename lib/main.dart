@@ -14,7 +14,7 @@ void main() =>
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     final store = DevToolsStore<AppState>(
       appReducers,
-      initialState: AppState()
+      initialState: AppState(tasks: [Task(title: 'task 1'), Task(title: 'task 2')])
     );
 
     runApp(ReduxApp(store));
@@ -29,19 +29,23 @@ class ReduxApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return StoreProvider<AppState>(
       store: store,
-      child: MyApp()
+      child: MyApp(store)
     );
   }
 }
 
 class MyApp extends StatelessWidget {
+  MyApp(this.store);
+
+  final DevToolsStore store;
+  
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       initialRoute: Routes.welcome,
       routes: {
         Routes.welcome: (context) => StartPage(),
-        Routes.taskList: (context) => TaskListPage(),
+        Routes.taskList: (context) => TaskListPage(store),
       },
       title: 'Task App',
     );

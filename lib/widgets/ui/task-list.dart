@@ -10,9 +10,11 @@ class TaskList extends StatelessWidget {
       converter: (store) => store.state,
       builder: (context, appState) {
         return new ListView.builder(
+          padding: EdgeInsets.all(20), 
+          scrollDirection: Axis.vertical,
           itemCount: appState.tasks.length,
           itemBuilder: (context, position) =>
-            new TastListItem(appState.tasks[position])
+            new TaskListItem(appState.tasks[position])
         );
       },
     );

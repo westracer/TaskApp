@@ -7,6 +7,7 @@ class CustomColors {
   static final Color lightBlue = Color.fromARGB(255, 93, 186, 255);
   static final Color violet = Color.fromARGB(255, 187, 148, 255);
   static final Color blue = Color.fromARGB(255, 58, 117, 243);
+  static final Color green = Color.fromARGB(255, 98, 229, 103);
 }
 
 class CustomGradients {

@@ -1,27 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:ui_kurs/assets/icon_pack_icons.dart';
+import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
+import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:ui_kurs/layout/colors.dart';
-import 'package:ui_kurs/types/app/routes.dart';
-import 'package:ui_kurs/widgets/ui/big-round-button.dart';
+import 'package:ui_kurs/types/data/task.dart';
+import 'package:ui_kurs/widgets/models/app-state.dart';
+import 'package:ui_kurs/widgets/ui/task-list-item.dart';
+import 'package:ui_kurs/widgets/ui/task-list.dart';
 
 class TaskListPage extends StatelessWidget {
+  TaskListPage(this.store);
+
+  final DevToolsStore store;
+
   @override
   Widget build(BuildContext context) {
-    debugPrint('task-list');
-
     return Scaffold(
       appBar: AppBar(
-        title: Text('task list'),
+        backgroundColor: CustomColors.violet,
+        title: Text('Ваши задачи'),
       ),
-      body: Container(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 40), 
-        child: MaterialButton(
-          child: Text('press'),
-          onPressed: () {
-            Navigator.pushReplacementNamed(context, Routes.welcome);
-          }
-        )
-      ),
+      body: TaskList(),
+      endDrawer: ReduxDevTools<AppState>(this.store),
     );
   }
 }

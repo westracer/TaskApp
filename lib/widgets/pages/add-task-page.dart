@@ -13,8 +13,8 @@ class AddTaskPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, OnItemAddedCallback>(
         converter: (store) {
-      return (itemName) =>
-          store.dispatch(CreateTaskAction(Task(title: itemName)));
+          return (itemName) =>
+            store.dispatch(CreateTaskAction(Task(title: itemName)));
     }, builder: (context, callback) {
       return new _AddTaskPage(callback);
     });

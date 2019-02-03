@@ -16,6 +16,16 @@ class Task {
     this.groupId = '',
   });
 
+  static TaskStatus getStatusFromString(String statusAsString) {
+    for (TaskStatus element in TaskStatus.values) {
+      if (element.toString() == statusAsString) {
+          return element;
+      }
+    }
+    
+    return null;
+  }
+
   static generateId() {
     return 'T' + Uuid().v4().toString();
   }
@@ -31,4 +41,27 @@ class Task {
   final int plannedTime;
   final int timeSpent;
   final String groupId;
+
+  Task.fromJson(Map<String, dynamic> json)
+      : title = json['title'],
+        creator = json['creator'],
+        description = json['description'],
+        executor = json['executor'],
+        dateTime = json['dateTime'],
+        status = Task.getStatusFromString(json['status']),
+        plannedTime = json['plannedTime'],
+        timeSpent = json['timeSpent'],
+        groupId = json['groupId'];
+
+  Map<String, dynamic> toJson() => {
+    'title': title,
+    'creator': creator,
+    'description': description,
+    'executor': executor,
+    'dateTime': dateTime,
+    'status': status.toString(),
+    'plannedTime': plannedTime,
+    'timeSpent': timeSpent,
+    'groupId': groupId,
+  };
 }
