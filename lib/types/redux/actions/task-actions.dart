@@ -31,3 +31,10 @@ class LoadTaskListSuccessAction {
 
   final String jsonString;
 }
+
+class MoveTaskAction {
+  MoveTaskAction(this.oldIndex, this.newIndex);
+
+  final int oldIndex;
+  final int newIndex;
+}

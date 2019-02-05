@@ -12,10 +12,6 @@
 ///       - asset: fonts/IconPack.ttf
 ///
 /// 
-/// * Elusive, Copyright (C) 2013 by Aristeides Stathopoulos
-///         Author:    Aristeides Stathopoulos
-///         License:   SIL (http://scripts.sil.org/OFL)
-///         Homepage:  http://aristeides.com/
 ///
 import 'package:flutter/widgets.dart';
 
@@ -25,5 +21,5 @@ class IconPack {
   static const _kFontFam = 'IconPack';
 
   static const IconData task_list = const IconData(0xe800, fontFamily: _kFontFam);
-  static const IconData tasks = const IconData(0xe801, fontFamily: _kFontFam);
+  static const IconData move_task = const IconData(0xe801, fontFamily: _kFontFam);
 }

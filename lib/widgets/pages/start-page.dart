@@ -24,9 +24,9 @@ class StartPage extends StatelessWidget {
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
-                          new Container(
+                          Container(
                             margin: const EdgeInsets.only(bottom: 30),
-                            child: new Icon(IconPack.task_list, size: 80.0, color: CustomColors.violet)
+                            child: Icon(IconPack.task_list, size: 80.0, color: CustomColors.violet)
                           ),
                           Container(
                             margin: const EdgeInsets.only(bottom: 14),

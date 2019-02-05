@@ -14,7 +14,9 @@ AppState appReducers(AppState appState, dynamic action) {
     return toggleDoneItem(appState, action);
   } else if (action is LoadTaskListSuccessAction) {
     return loadTaskListSuccess(appState, action);
-  } 
+  } else if (action is MoveTaskAction) {
+    return moveTask(appState, action);
+  }
 
   return appState;
 }
@@ -46,4 +48,22 @@ AppState loadTaskListSuccess(AppState appState, LoadTaskListSuccessAction action
   } catch (e) {
     return appState;
   }
+}
+
+AppState moveTask(AppState appState, MoveTaskAction action) {
+  int oldIndex = action.oldIndex;
+  int newIndex = action.newIndex;
+  int taskCount = appState.tasks.length;
+
+  if (oldIndex < 0 || oldIndex >= taskCount || newIndex < 0 || newIndex >= taskCount) {
+    return appState;
+  }
+
+  Task t = appState.tasks[oldIndex];
+
+  ListBuilder b = appState.tasks.toBuilder();
+  b.removeAt(oldIndex);
+  b.insert(newIndex, t);
+
+  return AppState(tasks: b.build());
 }

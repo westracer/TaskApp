@@ -12,6 +12,7 @@ import 'package:ui_kurs/widgets/models/app-state.dart';
 
 List<Middleware<AppState>> createAllMiddleware() {
   final List<Middleware<AppState>> middlewareList = [
+      // TODO: uncomment later
       // new TypedMiddleware<AppState, AddTasksAction>(_taskListSave()),
       // new TypedMiddleware<AppState, ToggleDoneTaskAction>(_taskListSave()),
       new TypedMiddleware<AppState, SaveTaskListAction>(_taskListSave()),
