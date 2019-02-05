@@ -3,10 +3,10 @@ import 'package:flutter_redux_dev_tools/flutter_redux_dev_tools.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 import 'package:ui_kurs/layout/colors.dart';
 import 'package:ui_kurs/types/app/routes.dart';
-import 'package:ui_kurs/types/app/storage.dart';
 import 'package:ui_kurs/widgets/models/app-state.dart';
 import 'package:ui_kurs/widgets/ui/big-round-button.dart';
 import 'package:ui_kurs/widgets/ui/custom-app-bar.dart';
+import 'package:ui_kurs/widgets/ui/drawer.dart';
 import 'package:ui_kurs/widgets/ui/task-list.dart';
 
 class TaskListPage extends StatelessWidget {
@@ -37,30 +37,7 @@ class TaskListPage extends StatelessWidget {
           ],
         ),
       ),
-      drawer: Drawer(
-        child: ListView(
-          // Important: Remove any padding from the ListView.
-          padding: EdgeInsets.zero,
-          children: <Widget>[
-            DrawerHeader(
-              child: Text('Header'),
-              decoration: BoxDecoration(
-                color: Colors.blue,
-              ),
-            ),
-            ListTile(
-              title: Text('Загрузить из памяти'),
-              onTap: () {
-                Storage.readString(LocalFiles.TASKS).then((String str) {
-                  debugPrint(str);
-                });
-
-                Navigator.pop(context);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: CustomDrawer(),
       endDrawer: ReduxDevTools<AppState>(this.store),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:ui_kurs/types/data/task.dart';
 
-class CreateTaskAction {
-  CreateTaskAction(this.task);
+class AddTasksAction {
+  AddTasksAction(this.tasks);
 
-  final Task task;
+  final List<Task> tasks;
 }
 
 class EditTaskAction {
@@ -16,4 +16,18 @@ class ToggleDoneTaskAction {
   ToggleDoneTaskAction(this.task);
 
   final Task task;
+}
+
+class LoadTaskListAction {
+  LoadTaskListAction();
+}
+
+class SaveTaskListAction {
+  SaveTaskListAction();
+}
+
+class LoadTaskListSuccessAction {
+  LoadTaskListSuccessAction(this.jsonString);
+
+  final String jsonString;
 }

@@ -38,8 +38,8 @@ class _TaskListItem extends StatelessWidget {
         margin: EdgeInsets.only(bottom: 10),
         child: DecoratedBox(
           decoration: BoxDecoration(
-            color: Colors.white,
-            border: Border.all(color: CustomColors.lightGray, width: 1.5),
+            color: task.isCompleted() ? CustomColors.green : Colors.white,
+            border: Border.all(color: task.isCompleted() ? CustomColors.green : CustomColors.lightGray, width: 1.5),
             borderRadius: BorderRadius.all(Radius.circular(3)),
           ),
           child: Row(
@@ -59,7 +59,7 @@ class _TaskListItem extends StatelessWidget {
                   child: Text(
                     task.title,
                     textAlign: TextAlign.left, 
-                    style: TextStyle(color: CustomColors.lightGray, fontWeight: FontWeight.normal, fontSize: 18),
+                    style: TextStyle(color: task.isCompleted() ? Colors.white : CustomColors.lightGray, fontWeight: FontWeight.normal, fontSize: 18),
                     overflow: TextOverflow.fade,
                     maxLines: 1,
                     softWrap: false,

@@ -17,7 +17,7 @@ class AddTaskPage extends StatelessWidget {
     return new StoreConnector<AppState, OnItemAddedCallback>(
         converter: (store) {
           return (newTask) =>
-            store.dispatch(CreateTaskAction(newTask));
+            store.dispatch(AddTasksAction([newTask]));
     }, builder: (context, callback) {
       return new AddTaskPageState(callback);
     });

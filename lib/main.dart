@@ -1,3 +1,4 @@
+
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,7 @@ import 'package:ui_kurs/types/redux/reducers.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:redux_dev_tools/redux_dev_tools.dart';
 
-void main() => 
+void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     final store = DevToolsStore<AppState>(
       appReducers,
@@ -22,6 +23,7 @@ void main() =>
 
     runApp(ReduxApp(store));
   });
+}
 
 class ReduxApp extends StatelessWidget {
   final DevToolsStore<AppState> store;

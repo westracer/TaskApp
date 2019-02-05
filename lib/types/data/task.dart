@@ -1,5 +1,7 @@
 library task;
 
+import 'dart:math';
+
 import 'package:ui_kurs/types/app/user.dart';
 import 'package:ui_kurs/types/data/task-status.dart';
 import 'package:uuid/uuid.dart';
@@ -48,6 +50,20 @@ abstract class Task implements Built<Task, TaskBuilder> {
 
   bool isCompleted() {
     return this.status == TaskStatus.DONE;
+  }
+
+  static List<Task> generateRandomTasks({int howMany = 1}) {
+    List<Task> list = [];
+
+    Random r = Random();
+    for (int i = 1; i <= howMany; i++) {
+      final title = 'Task ' + i.toString();
+      final TaskStatus status = TaskStatus.ALL_STATUSES[r.nextInt(TaskStatus.ALL_STATUSES.length - 1)];
+
+      list.add(Task((b) => b..title = title..status = status));
+    }
+
+    return list;
   }
 
   Task._();
