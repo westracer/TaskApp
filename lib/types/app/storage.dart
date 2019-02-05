@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
+import 'package:flutter/widgets.dart';
 
 enum LocalFiles { TASKS }
 
@@ -7,6 +8,7 @@ class Storage {
   static Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
 
+    debugPrint(directory.path);
     return directory.path;
   }
 
@@ -31,7 +33,7 @@ class Storage {
     return file.writeAsString('$string');
   }
 
-  static Future<String> readCounter(LocalFiles fileType) async {
+  static Future<String> readString(LocalFiles fileType) async {
     try {
       final File file = await getFileByType(fileType);
 

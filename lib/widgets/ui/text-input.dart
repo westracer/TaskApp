@@ -4,8 +4,9 @@ import 'package:ui_kurs/layout/colors.dart';
 
 // TODO: maybe extract field title
 class TextInput extends StatelessWidget {
-  const TextInput({ Key key, this.text, this.controller, this.inputType = TextInputType.text, this.hint = null, this.formatters = null }) : super(key: key);
+  const TextInput({ Key key, this.text, this.controller, this.isEmplemented = true, this.inputType = TextInputType.text, this.hint, this.formatters }) : super(key: key);
   
+  final bool isEmplemented;
   final List<TextInputFormatter> formatters;
   final TextEditingController controller;
   final TextInputType inputType;
@@ -27,6 +28,7 @@ class TextInput extends StatelessWidget {
         ),
         Container(
           margin: EdgeInsets.only(bottom: 20),
+          color: this.isEmplemented ? Colors.white : Colors.black12,
           child: TextField(
             controller: controller,
             keyboardType: inputType,

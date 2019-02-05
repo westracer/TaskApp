@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:ui_kurs/assets/icon_pack_icons.dart';
 import 'package:ui_kurs/layout/colors.dart';
-import 'package:ui_kurs/types/app/routes.dart';
+import 'package:ui_kurs/types/data/task-status.dart';
 import 'package:ui_kurs/types/data/task.dart';
 import 'package:ui_kurs/types/redux/actions/task-actions.dart';
 import 'package:ui_kurs/widgets/models/app-state.dart';
@@ -17,15 +16,15 @@ class AddTaskPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return new StoreConnector<AppState, OnItemAddedCallback>(
         converter: (store) {
-          return (itemName) =>
-            store.dispatch(CreateTaskAction(Task((b) => b..title = itemName)));
+          return (newTask) =>
+            store.dispatch(CreateTaskAction(newTask));
     }, builder: (context, callback) {
       return new AddTaskPageState(callback);
     });
   }
 }
 
-typedef OnItemAddedCallback = Function(String itemName);
+typedef OnItemAddedCallback = Function(Task newTask);
 
 class AddTaskPageState extends StatefulWidget {
   AddTaskPageState(this.callback);
@@ -42,6 +41,33 @@ class AddTaskPageState extends StatefulWidget {
 // ????????
 class _AddTaskPage extends State<AddTaskPageState> {
   _AddTaskPage();
+
+  // TODO: controller enum
+  final Map<String, TextEditingController> controllers = Map.from({
+    'title': TextEditingController(),
+    'datetime': TextEditingController(),
+    'description': TextEditingController(),
+    'planned': TextEditingController(),
+    'spent': TextEditingController(),
+  });
+
+  TaskStatus _taskStatus = TaskStatus.NEW;
+
+  Task createNewTask() {
+    int spent, planned;
+    DateTime dateTime = DateTime.tryParse(controllers['datetime'].text);
+    try { spent = int.parse(controllers['spent'].text); } on FormatException catch (_) { spent = 0; }
+    try { planned = int.parse(controllers['planned'].text); } on FormatException catch (_) { planned = 0; }
+
+    return Task((b) => b
+      ..title = controllers['title'].text
+      ..timeSpent = spent
+      ..status = _taskStatus
+      ..plannedTime = planned
+      ..dateTime = dateTime
+      ..description = controllers['description'].text
+    );
+  }
   
   @override
   Widget build(BuildContext context) {
@@ -54,29 +80,45 @@ class _AddTaskPage extends State<AddTaskPageState> {
           children: <Widget>[
             TextInput(
               text: 'Название *',
+              controller: controllers['title'],
               formatters: [
                 Services.BlacklistingTextInputFormatter.singleLineFormatter,
               ],
             ),
             TextInput(
               text: 'Дата и время',
+              controller: controllers['datetime'],
               inputType: TextInputType.datetime,
-              hint: 'дд.мм.гггг мм:чч',
+              hint: 'ДД-ММ-ГГГГ ММ:ЧЧ',
             ),
             Dropdown<String>(
               text: 'Исполнитель',
+              isEmplemented: false,
               list: ['to be done1', 'to be done2', 'to be done3', 'to be done4'],
               changeCallback: (String str) {},
               stringCallback: (String s) => s,
             ),
-            TextInput(
+            Dropdown<String>(
               text: 'Приоритет',
+              isEmplemented: false,
+              list: ['to be done1', 'to be done2', 'to be done3', 'to be done4'],
+              changeCallback: (String str) {},
+              stringCallback: (String s) => s,
             ),
-            TextInput(
+            Dropdown<TaskStatus>(
+              initValue: TaskStatus.NEW,
               text: 'Статус',
+              list: TaskStatus.ALL_STATUSES,
+              changeCallback: (TaskStatus status) {
+                _taskStatus = status;
+              },
+              stringCallback: (TaskStatus status) {
+                return TaskStatus.taskStatusNames[status];
+              },
             ),
             TextInput(
               text: 'Описание',
+              controller: controllers['description'],
               inputType: TextInputType.multiline,
               formatters: [],
             ),
@@ -90,6 +132,7 @@ class _AddTaskPage extends State<AddTaskPageState> {
                     child: TextInput(
                       text: 'Планируемое время',
                       hint: 'мин',
+                      controller: controllers['planned'],
                       inputType: TextInputType.number,
                       formatters: [
                         Services.WhitelistingTextInputFormatter.digitsOnly,
@@ -105,6 +148,7 @@ class _AddTaskPage extends State<AddTaskPageState> {
                     child: TextInput(
                       text: 'Затраченное время',
                       hint: 'мин',
+                      controller: controllers['spent'],
                       inputType: TextInputType.number,
                       formatters: [
                         Services.WhitelistingTextInputFormatter.digitsOnly,
@@ -118,7 +162,7 @@ class _AddTaskPage extends State<AddTaskPageState> {
             BigRoundButton(
               text: 'Создать',
               onClick: () {
-                this.widget.callback('asd');
+                this.widget.callback(this.createNewTask());
                 Navigator.pop(context);
               },
               normalColors: BigRoundButtonColors(color: CustomColors.violet, borderColor: CustomColors.violet, textColor: Colors.white),

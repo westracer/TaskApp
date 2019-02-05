@@ -26,9 +26,6 @@ class _$TaskSerializer implements StructuredSerializer<Task> {
       'status',
       serializers.serialize(object.status,
           specifiedType: const FullType(TaskStatus)),
-      'children',
-      serializers.serialize(object.children,
-          specifiedType: const FullType(List, const [const FullType(Task)])),
       'plannedTime',
       serializers.serialize(object.plannedTime,
           specifiedType: const FullType(int)),
@@ -59,6 +56,12 @@ class _$TaskSerializer implements StructuredSerializer<Task> {
         ..add('creator')
         ..add(serializers.serialize(object.creator,
             specifiedType: const FullType(User)));
+    }
+    if (object.parentId != null) {
+      result
+        ..add('parentId')
+        ..add(serializers.serialize(object.parentId,
+            specifiedType: const FullType(String)));
     }
     if (object.groupId != null) {
       result
@@ -109,11 +112,9 @@ class _$TaskSerializer implements StructuredSerializer<Task> {
           result.status = serializers.deserialize(value,
               specifiedType: const FullType(TaskStatus)) as TaskStatus;
           break;
-        case 'children':
-          result.children = serializers.deserialize(value,
-                  specifiedType:
-                      const FullType(List, const [const FullType(Task)]))
-              as List<Task>;
+        case 'parentId':
+          result.parentId = serializers.deserialize(value,
+              specifiedType: const FullType(String)) as String;
           break;
         case 'plannedTime':
           result.plannedTime = serializers.deserialize(value,
@@ -150,7 +151,7 @@ class _$Task extends Task {
   @override
   final TaskStatus status;
   @override
-  final List<Task> children;
+  final String parentId;
   @override
   final int plannedTime;
   @override
@@ -169,7 +170,7 @@ class _$Task extends Task {
       this.executor,
       this.creator,
       this.status,
-      this.children,
+      this.parentId,
       this.plannedTime,
       this.timeSpent,
       this.groupId})
@@ -182,9 +183,6 @@ class _$Task extends Task {
     }
     if (status == null) {
       throw new BuiltValueNullFieldError('Task', 'status');
-    }
-    if (children == null) {
-      throw new BuiltValueNullFieldError('Task', 'children');
     }
     if (plannedTime == null) {
       throw new BuiltValueNullFieldError('Task', 'plannedTime');
@@ -212,7 +210,7 @@ class _$Task extends Task {
         executor == other.executor &&
         creator == other.creator &&
         status == other.status &&
-        children == other.children &&
+        parentId == other.parentId &&
         plannedTime == other.plannedTime &&
         timeSpent == other.timeSpent &&
         groupId == other.groupId;
@@ -236,7 +234,7 @@ class _$Task extends Task {
                                 executor.hashCode),
                             creator.hashCode),
                         status.hashCode),
-                    children.hashCode),
+                    parentId.hashCode),
                 plannedTime.hashCode),
             timeSpent.hashCode),
         groupId.hashCode));
@@ -252,7 +250,7 @@ class _$Task extends Task {
           ..add('executor', executor)
           ..add('creator', creator)
           ..add('status', status)
-          ..add('children', children)
+          ..add('parentId', parentId)
           ..add('plannedTime', plannedTime)
           ..add('timeSpent', timeSpent)
           ..add('groupId', groupId))
@@ -291,9 +289,9 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
   TaskStatus get status => _$this._status;
   set status(TaskStatus status) => _$this._status = status;
 
-  List<Task> _children;
-  List<Task> get children => _$this._children;
-  set children(List<Task> children) => _$this._children = children;
+  String _parentId;
+  String get parentId => _$this._parentId;
+  set parentId(String parentId) => _$this._parentId = parentId;
 
   int _plannedTime;
   int get plannedTime => _$this._plannedTime;
@@ -318,7 +316,7 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
       _executor = _$v.executor;
       _creator = _$v.creator;
       _status = _$v.status;
-      _children = _$v.children;
+      _parentId = _$v.parentId;
       _plannedTime = _$v.plannedTime;
       _timeSpent = _$v.timeSpent;
       _groupId = _$v.groupId;
@@ -351,7 +349,7 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
             executor: executor,
             creator: creator,
             status: status,
-            children: children,
+            parentId: parentId,
             plannedTime: plannedTime,
             timeSpent: timeSpent,
             groupId: groupId);

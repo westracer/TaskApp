@@ -1,6 +1,6 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:redux/redux.dart';
 import 'package:ui_kurs/types/app/routes.dart';
 import 'package:ui_kurs/types/data/task.dart';
 import 'package:ui_kurs/types/redux/middlewares.dart';
@@ -16,8 +16,8 @@ void main() =>
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]).then((_) {
     final store = DevToolsStore<AppState>(
       appReducers,
-      initialState: AppState(tasks: [Task((b) => b..title = 'task 1'), Task((b) => b..title = 'task 2')]),
-      // middleware: createAllMiddleware()
+      initialState: AppState(tasks: BuiltList.from([Task((b) => b..title = 'task 1'), Task((b) => b..title = 'task 2')])),
+      middleware: createAllMiddleware()
     );
 
     runApp(ReduxApp(store));

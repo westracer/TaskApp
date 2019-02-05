@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:ui_kurs/layout/colors.dart';
 
 class Dropdown<T> extends StatefulWidget {
-  const Dropdown({ Key key, this.text, this.controller, this.list, this.stringCallback, this.changeCallback, }) : super(key: key);
+  const Dropdown({ Key key, this.text, this.controller, this.initValue, this.list, this.stringCallback, this.isEmplemented = true, this.changeCallback, }) : super(key: key);
 
+  final bool isEmplemented;
   final TextEditingController controller;
   final String text;
   final List<T> list;
   final Function(T) stringCallback;
   final Function(T) changeCallback;
+  final T initValue;
 
   @override
   _Dropdown createState() => _Dropdown<T>();
 }
 
-// TODO: maybe extract field title   
+// TODO: maybe extract field title
 class _Dropdown<T> extends State<Dropdown<T>> {
-  Widget _hint = Text('asd');
   T _value;
 
   @override
@@ -35,13 +35,14 @@ class _Dropdown<T> extends State<Dropdown<T>> {
         ),
         Container(
           margin: EdgeInsets.only(bottom: 20),
+          color: this.widget.isEmplemented ? null : Colors.black12,
           child: 
             DropdownButton<T>(
-            value: _value,
+            value: _value != null ? _value : this.widget.initValue,
             isExpanded: true,
             items: this.widget.list.map((T value) {
               return new DropdownMenuItem<T>(
-                value: this.widget.stringCallback(value),
+                value: value,
                 child: Text(this.widget.stringCallback(value)),
               );
             }).toList(),

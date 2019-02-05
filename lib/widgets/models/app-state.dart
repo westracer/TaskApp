@@ -1,29 +1,27 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:ui_kurs/types/app/user.dart';
 import 'package:ui_kurs/types/data/group.dart';
 import 'package:ui_kurs/types/data/task.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-
 // TODO: built_value immutability
 class AppState {
-  AppState({this.currentUser = null, this.tasks, this.groups});
+  AppState({this.currentUser, this.tasks, this.groups});
 
   final User currentUser;
-  final List<Task> tasks;
+  final BuiltList<Task> tasks;
   final List<Group> groups;
 
   AppState replaceTask(Task newTask, Task oldTask) {
-    List<Task> taskList = List.from(this.tasks);
-    int oldTaskIndex = taskList.indexWhere((Task test) { return test.id == oldTask.id; });
+    ListBuilder listBuilder = this.tasks.toBuilder();
+    int oldTaskIndex = this.tasks.indexWhere((Task test) { return test.id == oldTask.id; });
     if (oldTaskIndex != -1) {
-      taskList.replaceRange(oldTaskIndex, oldTaskIndex + 1, [newTask]);
+      listBuilder.replaceRange(oldTaskIndex, oldTaskIndex + 1, BuiltList<Task>([newTask]));
     }
 
     return AppState(
       currentUser: this.currentUser,
       groups: this.groups,
-      tasks: taskList
+      tasks: listBuilder.build()
     );
   }
 }
