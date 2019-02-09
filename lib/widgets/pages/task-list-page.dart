@@ -25,7 +25,7 @@ class TaskListPage extends StatelessWidget {
               child: TaskList(),
             ),
             Container(
-              padding: EdgeInsets.all(20),
+              padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 10),
               child: BigRoundButton(
                 text: '+ Создать',
                 normalColors: BigRoundButtonColors(color: CustomColors.violet, borderColor: CustomColors.violet, textColor: Colors.white),

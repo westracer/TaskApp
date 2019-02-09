@@ -53,14 +53,33 @@ abstract class Task implements Built<Task, TaskBuilder> {
   }
 
   static List<Task> generateRandomTasks({int howMany = 1}) {
+    const CHILD_TASK_CHANCE = .22;
+    const DESCRIPTIONS = [
+      'something important about the task goes here', 
+      'maybe you should do something',
+      'go get a drink',
+      'In publishing and graphic design, lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document without relying on meaningful content. Replacing the actual content with placeholder text allows designers to design the form of the content before the content itself has been produced.',
+      'btw drag and drop works like shit',
+      'sample description',
+      'come and stay awhile. and I will find a home because love to end, we love to end',
+    ];
+
     List<Task> list = [];
 
     Random r = Random();
     for (int i = 1; i <= howMany; i++) {
       final title = 'Task ' + i.toString();
       final TaskStatus status = TaskStatus.ALL_STATUSES[r.nextInt(TaskStatus.ALL_STATUSES.length - 1)];
+      final desctiption = DESCRIPTIONS[r.nextInt(DESCRIPTIONS.length - 1)];
 
-      list.add(Task((b) => b..title = title..status = status));
+      TaskBuilder b = Task((b) => b..title = title..status = status..description = desctiption).toBuilder();
+
+      if (list.length > 1 && r.nextDouble() < CHILD_TASK_CHANCE) {
+        int parentIndex = r.nextInt(list.length - 1);
+        b.parentId = list[parentIndex].id;
+      }
+
+      list.add(b.build());
     }
 
     return list;

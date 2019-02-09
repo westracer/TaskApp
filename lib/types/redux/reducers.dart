@@ -18,6 +18,8 @@ AppState appReducers(AppState appState, dynamic action) {
     return moveTask(appState, action);
   } else if (action is RemoveTaskAction) {
     return removeTask(appState, action);
+  } else if (action is EditTaskAction) {
+    return editTask(appState, action);
   }
 
   return appState;
@@ -39,6 +41,10 @@ AppState removeTask(AppState appState, RemoveTaskAction action) {
     groups: appState.groups,
     tasks: appState.tasks.rebuild((b) => b.removeWhere((Task test) => test.id == action.id))
   );
+}
+
+AppState editTask(AppState appState, EditTaskAction action) {
+  return appState.replaceTask(action.task, action.task);
 }
 
 AppState toggleDoneItem(AppState appState, ToggleDoneTaskAction action) {
