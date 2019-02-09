@@ -5,6 +5,7 @@ import 'package:flutter/painting.dart';
 class CustomColors {
   static final Color lightGray = Color.fromARGB(255, 150, 150, 150);
   static final Color lightBlue = Color.fromARGB(255, 93, 186, 255);
+  static final Color red = Color.fromARGB(255, 254, 116, 141);
   static final Color violet = Color.fromARGB(255, 187, 148, 255);
   static final Color blue = Color.fromARGB(255, 58, 117, 243);
   static final Color green = Color.fromARGB(255, 98, 229, 103);
@@ -20,5 +21,15 @@ class CustomGradients {
       CustomColors.violet,
     ],
     stops: <double>[0, 0.5, 1.0],
+  );
+  static final LinearGradient blueToLightBlue = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: <Color>[
+      Color.fromARGB(255, 93, 186, 255),
+      Color.fromARGB(255, 110, 186, 243),
+      Color.fromARGB(255, 95, 146, 255),
+    ],
+    stops: <double>[0, 0.6, 1.0],
   );
 }

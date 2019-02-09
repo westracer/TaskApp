@@ -16,6 +16,8 @@ AppState appReducers(AppState appState, dynamic action) {
     return loadTaskListSuccess(appState, action);
   } else if (action is MoveTaskAction) {
     return moveTask(appState, action);
+  } else if (action is RemoveTaskAction) {
+    return removeTask(appState, action);
   }
 
   return appState;
@@ -28,6 +30,14 @@ AppState addItem(AppState appState, AddTasksAction action) {
     currentUser: appState.currentUser,
     groups: appState.groups,
     tasks: appState.tasks.rebuild((b) => b.addAll(createdTasks))
+  );
+}
+
+AppState removeTask(AppState appState, RemoveTaskAction action) {
+  return AppState(
+    currentUser: appState.currentUser,
+    groups: appState.groups,
+    tasks: appState.tasks.rebuild((b) => b.removeWhere((Task test) => test.id == action.id))
   );
 }
 

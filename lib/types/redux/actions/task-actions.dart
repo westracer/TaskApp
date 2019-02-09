@@ -12,6 +12,12 @@ class EditTaskAction {
   final Task task;
 }
 
+class RemoveTaskAction {
+  RemoveTaskAction(this.id);
+
+  final String id;
+}
+
 class ToggleDoneTaskAction {
   ToggleDoneTaskAction(this.task);
 

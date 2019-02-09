@@ -4,9 +4,11 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:flutter_reorderable_list/flutter_reorderable_list.dart';
 import 'package:ui_kurs/assets/icon_pack_icons.dart';
 import 'package:ui_kurs/layout/colors.dart';
+import 'package:ui_kurs/types/app/routes.dart';
 import 'package:ui_kurs/types/data/task.dart';
 import 'package:ui_kurs/types/redux/actions/task-actions.dart';
 import 'package:ui_kurs/widgets/models/app-state.dart';
+import 'package:ui_kurs/widgets/pages/task-detail-page.dart';
 
 class TaskListItem extends StatelessWidget {
   TaskListItem(this.task, this.reorderState);
@@ -84,7 +86,12 @@ class _TaskListItem extends StatelessWidget {
         ),
       ),
       onTap: () {
-        debugPrint('task tap');
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            settings: RouteSettings(name: Routes.taskDetail), 
+            builder: (context) => TaskDetailPage(task: this.task),
+          ),
+        );
       },
     );
   }
