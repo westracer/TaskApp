@@ -1,6 +1,7 @@
 import 'package:ui_kurs/types/app/user.dart';
 import 'package:uuid/uuid.dart';
 
+// TODO: built immutability
 class Group {
   Group({
     this.title,

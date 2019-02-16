@@ -1,11 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ui_kurs/assets/icon_pack_icons.dart';
 import 'package:ui_kurs/layout/colors.dart';
 import 'package:ui_kurs/types/app/routes.dart';
+import 'package:ui_kurs/types/app/user.dart';
+import 'package:ui_kurs/widgets/models/app-state.dart';
 import 'package:ui_kurs/widgets/ui/big-round-button.dart';
 
 class StartPage extends StatelessWidget {
-  StartPage({Key key}) : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return StoreConnector<AppState, AppState>(
+        converter: (store) {
+          return store.state;
+    }, builder: (context, state) {
+      return _StartPage(state.currentUser);
+    });
+  }
+}
+
+class _StartPage extends StatefulWidget {
+  _StartPage(this.currentUser);
+
+  final User currentUser;
+  
+  @override
+  _StartPageState createState() => _StartPageState(currentUser);
+}
+
+class _StartPageState extends State<_StartPage> {
+  _StartPageState(this.currentUser);
+
+  final User currentUser;
+  
+  @override
+  void initState() {
+    super.initState();
+
+    if (currentUser != null) {
+      Future(() {
+        Navigator.pushReplacementNamed(context, Routes.taskList);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,20 +96,10 @@ class StartPage extends StatelessWidget {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: const EdgeInsets.only(bottom: 20),
                           child: BigRoundButton(
-                            text: 'Войти',
+                            text: 'Зарегистрироваться или войти',
                             onClick: () {
-                              Navigator.pushReplacementNamed(context, Routes.taskList);
-                            },
-                            normalColors: BigRoundButtonColors(color: CustomColors.lightBlue, borderColor: CustomColors.lightBlue, textColor: Colors.white),
-                          ),
-                        ),
-                        Container(
-                          child: BigRoundButton(
-                            text: 'Зарегистрироваться',
-                            onClick: () {
-                              Navigator.pushReplacementNamed(context, Routes.taskList);
+                              Navigator.pushNamed(context, Routes.login);
                             },
                             normalColors: BigRoundButtonColors(color: Colors.white, borderColor: CustomColors.violet, textColor: CustomColors.violet),
                           ),

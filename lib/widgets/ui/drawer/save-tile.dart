@@ -10,7 +10,7 @@ class SaveTile extends StatelessWidget {
     return new StoreConnector<AppState, OnSaveToStorage>(
         converter: (store) {
           return () =>
-            store.dispatch(SaveTaskListAction());
+            store.dispatch(SaveAppStateAction());
     }, builder: (context, callback) {
       return new _SaveTile(callback);
     });

@@ -49,7 +49,7 @@ class _$TaskSerializer implements StructuredSerializer<Task> {
       result
         ..add('executor')
         ..add(serializers.serialize(object.executor,
-            specifiedType: const FullType(User)));
+            specifiedType: const FullType(String)));
     }
     if (object.creator != null) {
       result
@@ -102,11 +102,11 @@ class _$TaskSerializer implements StructuredSerializer<Task> {
           break;
         case 'executor':
           result.executor = serializers.deserialize(value,
-              specifiedType: const FullType(User)) as User;
+              specifiedType: const FullType(String)) as String;
           break;
         case 'creator':
-          result.creator = serializers.deserialize(value,
-              specifiedType: const FullType(User)) as User;
+          result.creator.replace(serializers.deserialize(value,
+              specifiedType: const FullType(User)) as User);
           break;
         case 'status':
           result.status = serializers.deserialize(value,
@@ -145,7 +145,7 @@ class _$Task extends Task {
   @override
   final DateTime dateTime;
   @override
-  final User executor;
+  final String executor;
   @override
   final User creator;
   @override
@@ -277,13 +277,13 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
   DateTime get dateTime => _$this._dateTime;
   set dateTime(DateTime dateTime) => _$this._dateTime = dateTime;
 
-  User _executor;
-  User get executor => _$this._executor;
-  set executor(User executor) => _$this._executor = executor;
+  String _executor;
+  String get executor => _$this._executor;
+  set executor(String executor) => _$this._executor = executor;
 
-  User _creator;
-  User get creator => _$this._creator;
-  set creator(User creator) => _$this._creator = creator;
+  UserBuilder _creator;
+  UserBuilder get creator => _$this._creator ??= new UserBuilder();
+  set creator(UserBuilder creator) => _$this._creator = creator;
 
   TaskStatus _status;
   TaskStatus get status => _$this._status;
@@ -314,7 +314,7 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
       _description = _$v.description;
       _dateTime = _$v.dateTime;
       _executor = _$v.executor;
-      _creator = _$v.creator;
+      _creator = _$v.creator?.toBuilder();
       _status = _$v.status;
       _parentId = _$v.parentId;
       _plannedTime = _$v.plannedTime;
@@ -340,19 +340,32 @@ class TaskBuilder implements Builder<Task, TaskBuilder> {
 
   @override
   _$Task build() {
-    final _$result = _$v ??
-        new _$Task._(
-            id: id,
-            title: title,
-            description: description,
-            dateTime: dateTime,
-            executor: executor,
-            creator: creator,
-            status: status,
-            parentId: parentId,
-            plannedTime: plannedTime,
-            timeSpent: timeSpent,
-            groupId: groupId);
+    _$Task _$result;
+    try {
+      _$result = _$v ??
+          new _$Task._(
+              id: id,
+              title: title,
+              description: description,
+              dateTime: dateTime,
+              executor: executor,
+              creator: _creator?.build(),
+              status: status,
+              parentId: parentId,
+              plannedTime: plannedTime,
+              timeSpent: timeSpent,
+              groupId: groupId);
+    } catch (_) {
+      String _$failedField;
+      try {
+        _$failedField = 'creator';
+        _creator?.build();
+      } catch (e) {
+        throw new BuiltValueNestedFieldError(
+            'Task', _$failedField, e.toString());
+      }
+      rethrow;
+    }
     replace(_$result);
     return _$result;
   }

@@ -32,4 +32,14 @@ class CustomGradients {
     ],
     stops: <double>[0, 0.6, 1.0],
   );
+  static final LinearGradient lightRedToRed = LinearGradient(
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+    colors: <Color>[
+      Color.fromARGB(255, 255, 154, 172),
+      Color.fromARGB(255, 244, 110, 134),
+      Color.fromARGB(255, 233, 70, 100),
+    ],
+    stops: <double>[0, 0.55, 1.0],
+  );
 }

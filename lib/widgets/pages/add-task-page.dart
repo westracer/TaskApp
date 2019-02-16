@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' as Services;
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ui_kurs/layout/colors.dart';
+import 'package:ui_kurs/types/app/user.dart';
 import 'package:ui_kurs/types/data/task-status.dart';
 import 'package:ui_kurs/types/data/task.dart';
 import 'package:ui_kurs/types/redux/actions/task-actions.dart';
+import 'package:ui_kurs/types/redux/selectors.dart';
 import 'package:ui_kurs/widgets/models/app-state.dart';
 import 'package:ui_kurs/widgets/ui/big-round-button.dart';
 import 'package:ui_kurs/widgets/ui/custom-app-bar.dart';
@@ -36,9 +38,6 @@ class AddTaskPageState extends StatefulWidget {
 }
 
 // TODO: extract form, validate it and add datepicker
-// ????????
-// why the heck flutter doesn't use native datepacker
-// ????????
 class _AddTaskPage extends State<AddTaskPageState> {
   _AddTaskPage();
 
@@ -52,6 +51,7 @@ class _AddTaskPage extends State<AddTaskPageState> {
   });
 
   TaskStatus _taskStatus = TaskStatus.NEW;
+  String _executor;
 
   Task createNewTask() {
     int spent, planned;
@@ -65,6 +65,7 @@ class _AddTaskPage extends State<AddTaskPageState> {
       ..status = _taskStatus
       ..plannedTime = planned
       ..dateTime = dateTime
+      ..executor = _executor
       ..description = controllers['description'].text
     );
   }
@@ -75,8 +76,7 @@ class _AddTaskPage extends State<AddTaskPageState> {
       appBar: buildAppBar('Добавление задачи'),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20), 
-        child: 
-        Column(
+        child: Column(
           children: <Widget>[
             TextInput(
               text: 'Название *',
@@ -91,13 +91,21 @@ class _AddTaskPage extends State<AddTaskPageState> {
               inputType: TextInputType.datetime,
               hint: 'ДД-ММ-ГГГГ ММ:ЧЧ',
             ),
-            Dropdown<String>(
-              text: 'Исполнитель',
-              isEmplemented: false,
-              list: ['to be done1', 'to be done2', 'to be done3', 'to be done4'],
-              changeCallback: (String str) {},
-              stringCallback: (String s) => s,
-            ),
+            StoreConnector<AppState, AppState>(
+                converter: (store) => store.state, 
+                builder: (context, state) {
+                  return Dropdown<User>(
+                    initValue: null,
+                    text: 'Исполнитель',
+                    list: getAllUsers(state),
+                    changeCallback: (User user) {
+                      _executor = user.email;
+                    },
+                    stringCallback: (User user) {
+                      return user.email;
+                    },
+                  );
+            }),
             Dropdown<String>(
               text: 'Приоритет',
               isEmplemented: false,

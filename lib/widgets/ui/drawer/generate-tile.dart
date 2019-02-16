@@ -27,14 +27,17 @@ class _GenerateTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return 
-      ListTile(
-        title: Text('Сгенерировать 1000 задач'),
-        onTap: () async {
-          addCallback(Task.generateRandomTasks(howMany: 1000));
+    return StoreConnector<AppState, AppState>(
+        converter: (store) => store.state, 
+        builder: (context, appState) {
+          return ListTile(
+            title: Text('Сгенерировать 1000 задач'),
+            onTap: () async {
+              addCallback(Task.generateRandomTasks(howMany: 1000, forUser: appState.currentUser));
 
-          Navigator.pop(context);
-        },
-      );
+              Navigator.pop(context);
+            },
+          );
+    });
   }
 }

@@ -1,15 +1,19 @@
+library appstate;
+
 import 'package:built_collection/built_collection.dart';
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
 import 'package:ui_kurs/types/app/user.dart';
-import 'package:ui_kurs/types/data/group.dart';
 import 'package:ui_kurs/types/data/task.dart';
 
-// TODO: built_value immutability
-class AppState {
-  AppState({this.currentUser, this.tasks, this.groups});
+part 'app-state.g.dart';
 
-  final User currentUser;
-  final BuiltList<Task> tasks;
-  final List<Group> groups;
+abstract class AppState implements Built<AppState, AppStateBuilder> {
+  @nullable
+  User get currentUser;
+
+  BuiltList<Task> get tasks;
+  BuiltList<User> get users;
 
   // TODO: meh
   AppState replaceTask(Task newTask, Task oldTask) {
@@ -19,32 +23,46 @@ class AppState {
       listBuilder.replaceRange(oldTaskIndex, oldTaskIndex + 1, BuiltList<Task>([newTask]));
     }
 
-    return AppState(
-      currentUser: this.currentUser,
-      groups: this.groups,
-      tasks: listBuilder.build()
-    );
+    final BuiltList<Task> newList = listBuilder.build();
+
+    return this.rebuild((b) => b..tasks = newList.toBuilder());
   }
 
   static AppState getInitialState() {
-    final parentTask = Task((b) => b..title = 'parent task');
-    final parentTask2 = Task((b) => b..title = 'parent task 2');
-    final childTask = Task((b) => b..title = 'child task depth 1'..parentId = parentTask.id);
-
-    final list = [
-      parentTask, 
-      Task((b) => b..parentId = parentTask.id..title = 'child task'),
-      Task((b) => b..parentId = parentTask2.id..title = 'child task 1'),
-      Task((b) => b..parentId = parentTask2.id..title = 'child task 2'),
-      Task((b) => b..parentId = childTask.id..title = 'child task depth 2'),
-      childTask,
-      parentTask2,
+    final users = [
+      User((b) => b..email = 'user1@'..name = 'user1'..pass = 'user1'),
+      User((b) => b..email = 'user2@'..name = 'user2'..pass = 'user2'),
+      User((b) => b..email = 'user3@'..name = 'user3'..pass = 'user3'),
     ];
 
-    return AppState(
-      currentUser: null,
-      groups: [],
-      tasks: BuiltList.from(list)
+
+    List<Task> allTasks = List();
+
+    for (final user in users) {
+      final parentTask = Task((b) => b..executor = user.email..title = 'Задача' + ' для ' + user.name);
+      final parentTask2 = Task((b) => b..executor = user.email..title = 'Задача 2' + ' для ' + user.name);
+      final childTask = Task((b) => b..executor = user.email..title = 'Подзадача уровня 1' + ' для ' + user.name..parentId = parentTask.id);
+
+      final listForUser = [
+        parentTask, 
+        Task((b) => b..executor = user.email..parentId = parentTask.id..title = 'Подзадача' + ' для ' + user.name),
+        Task((b) => b..executor = user.email..parentId = parentTask2.id..title = 'Подзадача 1' + ' для ' + user.name),
+        Task((b) => b..executor = user.email..parentId = parentTask2.id..title = 'Подзадача 2' + ' для ' + user.name),
+        Task((b) => b..executor = user.email..parentId = childTask.id..title = 'Подзадача уровня 2' + ' для ' + user.name),
+        childTask,
+        parentTask2,
+      ];
+
+      allTasks.addAll(listForUser);
+    }
+
+    return AppState((b) => b
+      ..users = BuiltList<User>.from(users).toBuilder()
+      ..tasks = BuiltList<Task>.from(allTasks).toBuilder()
     );
   }
+
+  AppState._();
+  static Serializer<AppState> get serializer => _$appStateSerializer;
+  factory AppState([updates(AppStateBuilder b)]) => _$AppState((b) => b..update(updates));
 }

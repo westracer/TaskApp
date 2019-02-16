@@ -25,7 +25,7 @@ abstract class Task implements Built<Task, TaskBuilder> {
   DateTime get dateTime;
 
   @nullable
-  User get executor;
+  String get executor;
 
   @nullable
   User get creator;
@@ -52,7 +52,7 @@ abstract class Task implements Built<Task, TaskBuilder> {
     return this.status == TaskStatus.DONE;
   }
 
-  static List<Task> generateRandomTasks({int howMany = 1}) {
+  static List<Task> generateRandomTasks({int howMany = 1, User forUser}) {
     const CHILD_TASK_CHANCE = .22;
     const DESCRIPTIONS = [
       'something important about the task goes here', 
@@ -73,6 +73,7 @@ abstract class Task implements Built<Task, TaskBuilder> {
       final desctiption = DESCRIPTIONS[r.nextInt(DESCRIPTIONS.length - 1)];
 
       TaskBuilder b = Task((b) => b..title = title..status = status..description = desctiption).toBuilder();
+      b.executor = forUser != null ? forUser.email : null;
 
       if (list.length > 1 && r.nextDouble() < CHILD_TASK_CHANCE) {
         int parentIndex = r.nextInt(list.length - 1);

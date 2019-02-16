@@ -1,36 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:ui_kurs/types/data/task.dart';
 import 'package:ui_kurs/types/redux/actions/task-actions.dart';
 import 'package:ui_kurs/widgets/models/app-state.dart';
 
-class LoadTile extends StatelessWidget {
+class InitialStateTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return new StoreConnector<AppState, OnLoadFromStorage>(
+    return new StoreConnector<AppState, OnInitialStateCallback>(
         converter: (store) {
           return () =>
-            store.dispatch(LoadAppStateAction());
+            store.dispatch(InitialStateAction());
     }, builder: (context, callback) {
-      return new _LoadTile(callback);
+      return new _InitialStateTile(callback);
     });
   }
 }
 
-typedef OnLoadFromStorage = Function();
+typedef OnInitialStateCallback = Function();
 
-class _LoadTile extends StatelessWidget {
-  _LoadTile(this.loadCallback);
+class _InitialStateTile extends StatelessWidget {
+  _InitialStateTile(this.addCallback);
 
-  final OnLoadFromStorage loadCallback;
+  final OnInitialStateCallback addCallback;
 
   @override
   Widget build(BuildContext context) {
     return 
       ListTile(
-        title: Text('Загрузить из памяти'),
+        title: Text('initial state'),
         onTap: () async {
-          loadCallback();
+          addCallback();
 
           Navigator.pop(context);
         },

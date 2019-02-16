@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
-enum LocalFiles { TASKS }
+enum LocalFiles { TASKS, APP_STATE }
 
 class Storage {
   static Future<String> get _localPath async {
@@ -15,11 +15,18 @@ class Storage {
     return File('$path/tasks.json');
   }
 
+  static Future<File> get _localStateFile async {
+    final path = await _localPath;
+    return File('$path/state.json');
+  }
+
   static Future<File> getFileByType(LocalFiles fileType) async {
     File file;
 
     if (fileType == LocalFiles.TASKS) {
       file = await _localTasksFile;
+    } else if (fileType == LocalFiles.APP_STATE) {
+      file = await _localStateFile;
     }
 
     return file;

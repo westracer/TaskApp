@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:ui_kurs/types/data/task.dart';
 import 'package:ui_kurs/types/redux/actions/task-actions.dart';
+import 'package:ui_kurs/types/redux/selectors.dart';
 import 'package:ui_kurs/widgets/models/app-state.dart';
 import 'package:ui_kurs/widgets/models/task-tree.dart';
 import 'package:ui_kurs/widgets/ui/task-list-item.dart';
@@ -13,7 +14,7 @@ class TaskList extends StatelessWidget {
     return StoreConnector<AppState, AppState>(
       converter: (store) => store.state,
       builder: (context, appState) {
-        final _list = appState.tasks.toList();
+        final List<Task> _list = getUserTasks(appState);
 
         return _TaskList(list: _list);
       },
@@ -63,7 +64,7 @@ class _TaskListView extends State<_TaskList> {
       // TODO: not so sure about that
       onDidChange: (AppState appState) {
         setState(() {
-          final tree = buildTreeAndGetRoots(appState.tasks.toList());
+          final tree = buildTreeAndGetRoots(getUserTasks(appState));
           final flat = getFlatListWithDepths(tree);
 
           _list = flat.flatList;

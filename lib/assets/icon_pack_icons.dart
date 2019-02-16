@@ -23,4 +23,5 @@ class IconPack {
   static const IconData move_task = const IconData(0xe800, fontFamily: _kFontFam);
   static const IconData task_list = const IconData(0xe801, fontFamily: _kFontFam);
   static const IconData question = const IconData(0xe802, fontFamily: _kFontFam);
+  static const IconData close__1_ = const IconData(0xe803, fontFamily: _kFontFam);
 }

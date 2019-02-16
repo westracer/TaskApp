@@ -1,4 +1,9 @@
-import 'package:ui_kurs/types/data/group.dart';
+library user;
+
+import 'package:built_value/built_value.dart';
+import 'package:built_value/serializer.dart';
+
+part 'user.g.dart';
 
 enum AuthType {
   REGISTER,
@@ -6,12 +11,12 @@ enum AuthType {
   WITHOUT
 }
 
-// TODO: built_value
-class User {
-  User({this.email = '', this.name = '', this.pass = ''});
+abstract class User implements Built<User, UserBuilder> {
+  String get email;
+  String get name;
+  String get pass;
 
-  final String email;
-  final String name;
-  final String pass;
-  final List<Group> groups = List<Group>();
+  User._();
+  static Serializer<User> get serializer => _$userSerializer;
+  factory User([updates(UserBuilder b)]) => _$User((b) => b..update(updates));
 }

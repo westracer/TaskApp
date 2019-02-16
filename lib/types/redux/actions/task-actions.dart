@@ -1,4 +1,7 @@
+import 'package:flutter/widgets.dart';
+import 'package:ui_kurs/types/app/user.dart';
 import 'package:ui_kurs/types/data/task.dart';
+import 'package:ui_kurs/widgets/models/app-state.dart';
 
 class AddTasksAction {
   AddTasksAction(this.tasks);
@@ -24,16 +27,22 @@ class ToggleDoneTaskAction {
   final Task task;
 }
 
-class LoadTaskListAction {
-  LoadTaskListAction();
+class LoadAppStateAction {
+  LoadAppStateAction();
 }
 
-class SaveTaskListAction {
-  SaveTaskListAction();
+class ReplaceAppStateAction {
+  ReplaceAppStateAction(this.appState);
+
+  final AppState appState;
 }
 
-class LoadTaskListSuccessAction {
-  LoadTaskListSuccessAction(this.jsonString);
+class SaveAppStateAction {
+  SaveAppStateAction();
+}
+
+class LoadAppStateSuccessAction {
+  LoadAppStateSuccessAction(this.jsonString);
 
   final String jsonString;
 }
@@ -43,4 +52,28 @@ class MoveTaskAction {
 
   final int oldIndex;
   final int newIndex;
+}
+
+class SignInAction {
+  SignInAction(this.context, this.user);
+
+  final User user;
+  final BuildContext context;
+}
+
+class SignUpAction {
+  SignUpAction(this.context, this.user);
+
+  final User user;
+  final BuildContext context;
+}
+
+class SignOutAction {
+  SignOutAction(this.context);
+
+  final BuildContext context;
+}
+
+class InitialStateAction {
+  InitialStateAction();
 }
